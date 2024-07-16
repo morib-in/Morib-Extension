@@ -1,5 +1,3 @@
-console.log("Content script loaded.");
-
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === "NAVER_DETECTED") {
     console.log("NAVER_DETECTED message received in content script.");
