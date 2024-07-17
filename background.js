@@ -1,31 +1,18 @@
-let urlList = [];
+let reactTabId = null;
+const reactPageUrl = "http://localhost:3000/";
 
-// 콘텐츠 스크립트로부터 메시지를 수신하여 URL 리스트를 저장
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  console.log("Received message in background:", message);
-
-  if (message.action === 'storeUrls') {
-    urlList = message.urls;
-    console.log("Stored URL list in background:", urlList);
-    sendResponse({ success: true });
-  }
-});
-
-// URL 검사 함수
-function checkUrlAndSendMessage(tabId, currentUrl) {
-  console.log("Current URL being checked:", currentUrl);
-  const isValid = urlList.some(url => currentUrl.includes(url));
-  console.log("Checking URL:", currentUrl, "against list:", urlList, "is valid:", isValid);
-
-  if (!isValid) {
-    console.log("Invalid URL, sending message to content script for tab:", tabId);
-    chrome.tabs.sendMessage(tabId, { action: 'alertUrlNotFound', url: currentUrl }, function(response) {
+// URL 전송 함수
+function sendUrlToReactTab(currentUrl) {
+  if (reactTabId !== null) {
+    chrome.tabs.sendMessage(reactTabId, { action: 'urlUpdated', url: currentUrl }, function(response) {
       if (chrome.runtime.lastError) {
-        // console.error("Error sending message to content script:", chrome.runtime.lastError.message);
+        console.error("Error sending message to React tab:", chrome.runtime.lastError.message);
       } else {
-        console.log('Message sent successfully to content script');
+        console.log('Message sent successfully to React tab');
       }
     });
+  } else {
+    console.error("React tab ID is null");
   }
 }
 
@@ -34,7 +21,12 @@ chrome.tabs.onActivated.addListener(activeInfo => {
   chrome.tabs.get(activeInfo.tabId, (tab) => {
     const currentUrl = tab.url;
     if (currentUrl) {
-      checkUrlAndSendMessage(activeInfo.tabId, currentUrl);
+      if (currentUrl.includes(reactPageUrl)) {
+        reactTabId = activeInfo.tabId;
+        console.log("React tab activated with ID:", reactTabId);
+      } else {
+        sendUrlToReactTab(currentUrl);
+      }
     } else {
       console.error("No URL found for the active tab.");
     }
@@ -44,8 +36,14 @@ chrome.tabs.onActivated.addListener(activeInfo => {
 // 탭 업데이트 감지 리스너
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   if (changeInfo.status === 'complete') {
-    if (tab.url) {
-      checkUrlAndSendMessage(tabId, tab.url);
+    const currentUrl = tab.url;
+    if (currentUrl) {
+      if (currentUrl.includes(reactPageUrl)) {
+        reactTabId = tabId;
+        console.log("React tab updated with ID:", reactTabId);
+      } else {
+        sendUrlToReactTab(currentUrl);
+      }
     } else {
       console.error("No URL found for the updated tab.");
     }

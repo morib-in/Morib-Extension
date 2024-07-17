@@ -9,16 +9,14 @@
   ],
   "host_permissions": [
     "http://*/*",
-    "https://*/*",
-    "file://*/*",
-    "ftp://*/*"
+    "https://*/*"
   ],
   "background": {
     "service_worker": "background.js"
   },
   "content_scripts": [
     {
-      "matches": ["http://*/*", "https://*/*", "file://*/*", "ftp://*/*"],
+      "matches": ["http://*/*", "https://*/*"],
       "js": ["content.js"],
       "run_at": "document_end"
     }
