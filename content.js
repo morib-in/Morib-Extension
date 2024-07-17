@@ -1,8 +1,15 @@
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message.type === "NAVER_DETECTED") {
-    console.log("NAVER_DETECTED message received in content script.");
-    const event = new CustomEvent('naverDetected', { detail: { message: "User has accessed naver.com" } });
-    document.dispatchEvent(event);
-    console.log("Custom event dispatched.");
+window.addEventListener('message', (event) => {
+  if (event.source !== window) return;
+
+  if (event.data.type && (event.data.type === "FROM_PAGE")) {
+    chrome.runtime.sendMessage(event.data, (response) => {
+      window.postMessage({ type: "FROM_EXTENSION", response: response }, "*");
+    });
+  }
+});
+
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request.action === "urlNotFound") {
+    window.postMessage({ type: "FROM_EXTENSION", action: "alertUrlNotFound", url: request.url }, "*");
   }
 });

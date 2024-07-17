@@ -1,13 +1,12 @@
 {
   "manifest_version": 3,
-  "name": "URL Access Detector",
+  "name": "URL Detector",
   "version": "1.0",
-  "description": "Detects URL access and sends a message if the URL is not in the stored list",
   "permissions": [
-    "tabs",
+    "storage",
     "activeTab",
     "webNavigation",
-    "storage"
+    "tabs"
   ],
   "background": {
     "service_worker": "background.js"
@@ -17,5 +16,9 @@
       "matches": ["<all_urls>"],
       "js": ["content.js"]
     }
-  ]
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "View Stored URLs"
+  }
 }
