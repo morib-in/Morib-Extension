@@ -6,7 +6,7 @@ function sendUrlToReactTab(currentUrl) {
   if (reactTabId !== null) {
     chrome.tabs.sendMessage(reactTabId, { action: 'urlUpdated', url: currentUrl }, function(response) {
       if (chrome.runtime.lastError) {
-        console.error("Error sending message to React tab:", chrome.runtime.lastError.message);
+        // console.error("Error sending message to React tab:", chrome.runtime.lastError.message); -> 주석처리 안하면 계속 오류남
       } else {
         console.log('Message sent successfully to React tab');
       }
