@@ -19,8 +19,12 @@ function checkUrlAndSendMessage(tabId, currentUrl) {
 
   if (!isValid) {
     console.log("Invalid URL, sending message to content script for tab:", tabId);
-    chrome.tabs.sendMessage(tabId, { action: 'alertUrlNotFound', url: currentUrl }, (response) => {
-      console.log('Message sent successfully');
+    chrome.tabs.sendMessage(tabId, { action: 'alertUrlNotFound', url: currentUrl }, function(response) {
+      if (chrome.runtime.lastError) {
+        // console.error("Error sending message to content script:", chrome.runtime.lastError.message);
+      } else {
+        console.log('Message sent successfully to content script');
+      }
     });
   }
 }
