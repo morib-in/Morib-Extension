@@ -1,16 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>URL List</title>
-  <link rel="stylesheet" href="popup.css">
+  <title>URL Tracker Popup</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 10px;
+    }
+    ul {
+      padding: 0;
+      list-style: none;
+    }
+    li {
+      margin: 5px 0;
+    }
+  </style>
 </head>
 <body>
-  <div id="url-container">
-    <h1>Stored URLs</h1>
-    <ul id="url-list"></ul>
-  </div>
+  <h1>Tracked URLs</h1>
+  <ul id="urlList"></ul>
   <script src="popup.js"></script>
 </body>
 </html>

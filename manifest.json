@@ -1,12 +1,15 @@
 {
   "manifest_version": 3,
-  "name": "URL Detector",
+  "name": "URL Tracker",
   "version": "1.0",
   "permissions": [
-    "storage",
     "activeTab",
-    "webNavigation",
-    "tabs"
+    "tabs",
+    "scripting"
+  ],
+  "host_permissions": [
+    "http://*/*",
+    "https://*/*"
   ],
   "background": {
     "service_worker": "background.js"
@@ -18,7 +21,6 @@
     }
   ],
   "action": {
-    "default_popup": "popup.html",
-    "default_title": "View Stored URLs"
+    "default_popup": "popup.html"
   }
 }
