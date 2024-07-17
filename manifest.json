@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "URL Tracker",
+  "name": "URL Checker",
   "version": "1.0",
   "permissions": [
     "activeTab",
@@ -9,18 +9,18 @@
   ],
   "host_permissions": [
     "http://*/*",
-    "https://*/*"
+    "https://*/*",
+    "file://*/*",
+    "ftp://*/*"
   ],
   "background": {
     "service_worker": "background.js"
   },
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
-      "js": ["content.js"]
+      "matches": ["http://*/*", "https://*/*", "file://*/*", "ftp://*/*"],
+      "js": ["content.js"],
+      "run_at": "document_end"
     }
-  ],
-  "action": {
-    "default_popup": "popup.html"
-  }
+  ]
 }
