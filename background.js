@@ -1,23 +1,27 @@
 let reactTabId = null;
-const reactPageUrl = "http://localhost:3000/";
+const reactPageUrl = "http://localhost:5173/";
 
 // URL 전송 함수
 function sendUrlToReactTab(currentUrl) {
   if (reactTabId !== null) {
-    chrome.tabs.sendMessage(reactTabId, { action: 'urlUpdated', url: currentUrl }, function(response) {
-      if (chrome.runtime.lastError) {
-        // console.error("Error sending message to React tab:", chrome.runtime.lastError.message); -> 주석처리 안하면 계속 오류남
-      } else {
-        console.log('Message sent successfully to React tab');
+    chrome.tabs.sendMessage(
+      reactTabId,
+      { action: "urlUpdated", url: currentUrl },
+      function (response) {
+        if (chrome.runtime.lastError) {
+          // console.error("Error sending message to React tab:", chrome.runtime.lastError.message); -> 주석처리 안하면 계속 오류남
+        } else {
+          console.log("Message sent successfully to React tab");
+        }
       }
-    });
+    );
   } else {
     console.error("React tab ID is null");
   }
 }
 
 // 탭 활성화 감지시 발생하는 리스너
-chrome.tabs.onActivated.addListener(activeInfo => {
+chrome.tabs.onActivated.addListener((activeInfo) => {
   chrome.tabs.get(activeInfo.tabId, (tab) => {
     const currentUrl = tab.url;
     if (currentUrl) {
@@ -35,7 +39,7 @@ chrome.tabs.onActivated.addListener(activeInfo => {
 
 // 탭 업데이트 감지 리스너
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-  if (changeInfo.status === 'complete') {
+  if (changeInfo.status === "complete") {
     const currentUrl = tab.url;
     if (currentUrl) {
       if (currentUrl.includes(reactPageUrl)) {

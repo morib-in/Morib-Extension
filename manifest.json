@@ -1,16 +1,12 @@
 {
   "manifest_version": 3,
-  "name": "URL Checker",
+  "name": "Morib Tracker",
   "version": "1.0",
-  "permissions": [
-    "activeTab",
-    "tabs",
-    "scripting"
-  ],
-  "host_permissions": [
-    "http://*/*",
-    "https://*/*"
-  ],
+  "icons": {
+    "16": "logo.png"
+  },
+  "permissions": ["activeTab", "tabs", "scripting"],
+  "host_permissions": ["http://*/*", "https://*/*"],
   "background": {
     "service_worker": "background.js"
   },
