@@ -1,5 +1,5 @@
 let reactTabId = null;
-const reactPageUrl = "http://localhost:5173/";
+const reactPageUrl = "https://www.morib.in/";
 
 // URL 전송 함수
 function sendUrlToReactTab(currentUrl) {
